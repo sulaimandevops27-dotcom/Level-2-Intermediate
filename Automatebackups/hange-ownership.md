@@ -1,46 +1,62 @@
-# Level 2 – Intermediate DevOps Tasks
-
-This level focuses on **daily DevOps tasks** that are commonly required in production environments.  
-By completing these tasks, you will learn to automate routine work, manage logs, and monitor system health.
-
----
-
-# ✅ Task 1: Automate Backups with Cron
+# ✅ Automate Backups with Cron
 
 This guide explains how to **automate backups using Cron** on Linux.  
-Automating backups ensures your important files and directories are saved regularly without manual intervention.
+Automating backups ensures your important files are saved regularly without manual work.
 
 ---
 
-## ✅ Step 1: Understand Cron
+## ✅ Step 1: Create a Backup Script
 
 **Explanation:**  
-Cron is a Linux utility that allows you to **schedule commands or scripts** to run automatically at specified times (daily, weekly, monthly, etc.).  
-Each scheduled task is called a **cron job**.
+We will create a simple script to backup a directory.
 
-**Example:**  
-```bash
-# View current cron jobs for your user
-crontab -l
-```
-
----
-
-## ✅ Step 2: Create a Backup Script
-
-**Explanation:**  
-It’s best practice to create a shell script for backups. This allows you to **reuse and modify it easily**.
-
-**Example:**  
 ```bash
 #!/bin/bash
-# backup.sh - Backup /home/devuser to /backup directory
+# backup.sh - Backup /home/devuser to /backup
 
-# Create backup directory if it doesn't exist
 mkdir -p /backup
-
-# Create a compressed backup file with date
 tar -czf /backup/home-backup-$(date +%F).tar.gz /home/devuser
 ```
 
-> Save this file as `backup.sh` in a directory like `/usr/local/bin
+> Save this file as `/usr/local/bin/backup.sh`.
+
+---
+
+## ✅ Step 2: Make the Script Executable
+
+```bash
+chmod +x /usr/local/bin/backup.sh
+```
+
+---
+
+## ✅ Step 3: Schedule the Script with Cron
+
+**Explanation:**  
+Use cron to run the script automatically every day at 2 AM.
+
+```bash
+crontab -e
+```
+
+Add this line:
+
+```bash
+0 2 * * * /usr/local/bin/backup.sh
+```
+
+---
+
+## ✅ Step 4: Verify the Cron Job
+
+```bash
+crontab -l
+```
+
+You should see your backup script scheduled.
+
+---
+
+## 🎉 Backup Automation Complete!
+
+Your system will now **automatically backup files daily**.
